@@ -1,11 +1,11 @@
 {
   "name": "pullbox",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
   "type": "module",
   "main": "./main.cjs",
   "license": "MIT",
-  "description": "Desktop based POS App",
+  "description": "Production-grade Electron desktop app - GUI wrapper for yt-dlp media downloader",
   "author": {
     "name": "Sharif Md. Minhaz",
     "email": "minhaz.rbs@gmail.com"
@@ -22,9 +22,13 @@
     "package": "electron-forge package",
     "make": "electron-forge make",
     "make-win": "electron-forge make --platform=win32 --arch=x64",
-    "electron": "electron ."
+    "electron": "electron .",
+    "download-ytdlp": "node scripts/download-ytdlp.js",
+    "postinstall": "node scripts/download-ytdlp.js"
   },
   "dependencies": {
+    "@tabler/core": "^1.4.0",
+    "@tabler/icons-react": "^3.36.1",
     "@tailwindcss/vite": "^4.1.18",
     "electron-squirrel-startup": "^1.0.1",
     "react": "^19.2.0",
@@ -55,8 +59,8 @@
     "vite": "^7.2.4"
   },
   "build": {
-    "appId": "com.pos.id",
-    "productName": "POS App",
+    "appId": "com.pullbox.app",
+    "productName": "Pullbox",
     "directories": {
       "output": "dist"
     },
@@ -66,8 +70,8 @@
       "index.cjs"
     ],
     "win": {
-      "publisherName": "POS App",
-      "artifactName": "pos-installer.exe",
+      "publisherName": "Pullbox",
+      "artifactName": "pullbox-installer.exe",
       "icon": "icons/list.ico",
       "publish": [
         "github"
@@ -85,7 +89,7 @@
     "linux": {
       "icon": "icons/list.png",
       "target": "AppImage",
-      "category": "Business",
+      "category": "Network",
       "maintainer": "Sharif Md. Minhaz <minhaz.rbs@gmail.com>"
     },
     "nsis": {

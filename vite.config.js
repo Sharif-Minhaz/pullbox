@@ -22,4 +22,13 @@ export default defineConfig({
   server: {
     port: 3000,
   },
+  build: {
+    outDir: "dist",
+    emptyOutDir: true,
+  },
+  resolve: {
+    alias: {
+      "@tabler/icons-react": "@tabler/icons-react/dist/esm/icons/index.mjs",
+    },
+  },
 })
