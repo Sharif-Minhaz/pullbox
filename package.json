@@ -1,0 +1,100 @@
+{
+  "name": "pullbox",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "main": "./main.cjs",
+  "license": "MIT",
+  "description": "Desktop based POS App",
+  "author": {
+    "name": "Sharif Md. Minhaz",
+    "email": "minhaz.rbs@gmail.com"
+  },
+  "homepage": "./",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build --base=./",
+    "lint": "eslint .",
+    "preview": "vite preview",
+    "start": "electron-forge start",
+    "dev-app": "concurrently \"VITE_DEV_SERVER_URL=http://localhost:3000 vite\" \"ELECTRON_START_URL=http://localhost:3000 electron-forge start\"",
+    "dev-mac": "concurrently \"cross-env VITE_DEV_SERVER_URL=http://localhost:3000 vite\" \"cross-env ELECTRON_START_URL=http://localhost:3000 electron-forge start\"",
+    "package": "electron-forge package",
+    "make": "electron-forge make",
+    "make-win": "electron-forge make --platform=win32 --arch=x64",
+    "electron": "electron ."
+  },
+  "dependencies": {
+    "@tailwindcss/vite": "^4.1.18",
+    "electron-squirrel-startup": "^1.0.1",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
+    "tailwindcss": "^4.1.18"
+  },
+  "devDependencies": {
+    "@electron-forge/cli": "^7.11.1",
+    "@electron-forge/maker-deb": "^7.11.1",
+    "@electron-forge/maker-rpm": "^7.11.1",
+    "@electron-forge/maker-squirrel": "^7.11.1",
+    "@electron-forge/maker-zip": "^7.11.1",
+    "@electron-forge/plugin-auto-unpack-natives": "^7.11.1",
+    "@electron-forge/plugin-fuses": "^7.11.1",
+    "@electron/fuses": "^1.8.0",
+    "@eslint/js": "^9.39.1",
+    "@types/react": "^19.2.5",
+    "@types/react-dom": "^19.2.3",
+    "@vitejs/plugin-react": "^5.1.1",
+    "babel-plugin-react-compiler": "^1.0.0",
+    "concurrently": "^9.2.1",
+    "electron": "^40.0.0",
+    "esbuild-plugin-polyfill-node": "^0.3.0",
+    "eslint": "^9.39.1",
+    "eslint-plugin-react-hooks": "^7.0.1",
+    "eslint-plugin-react-refresh": "^0.4.24",
+    "globals": "^16.5.0",
+    "vite": "^7.2.4"
+  },
+  "build": {
+    "appId": "com.pos.id",
+    "productName": "POS App",
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "dist/**/*",
+      "icons/**/*",
+      "index.cjs"
+    ],
+    "win": {
+      "publisherName": "POS App",
+      "artifactName": "pos-installer.exe",
+      "icon": "icons/list.ico",
+      "publish": [
+        "github"
+      ],
+      "target": [
+        {
+          "target": "portable",
+          "arch": [
+            "x64",
+            "ia32"
+          ]
+        }
+      ]
+    },
+    "linux": {
+      "icon": "icons/list.png",
+      "target": "AppImage",
+      "category": "Business",
+      "maintainer": "Sharif Md. Minhaz <minhaz.rbs@gmail.com>"
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": false,
+      "allowToChangeInstallationDirectory": true,
+      "installerIcon": "icons/list.ico",
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true
+    }
+  }
+}
