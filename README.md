@@ -10,7 +10,7 @@ A production-grade **Electron desktop application** that provides a modern GUI w
 ## 🎯 Features
 
 - ✅ **Modern UI** - Built with React, TailwindCSS, and Tabler Icons
-- ✅ **Multi-site Support** - Download from YouTube, Facebook, X.com, Instagram, TikTok, and thousands more
+- ✅ **Multi-site Support** - Download from popular social media's public videos.
 - ✅ **Quality Selection** - Choose from available resolutions and formats
 - ✅ **Audio Extraction** - Download audio-only in MP3 format
 - ✅ **Real-time Progress** - Live download progress with speed and ETA
@@ -194,7 +194,7 @@ This app follows **Electron security best practices**:
 
 ## 📖 Usage
 
-1. **Paste a URL** from any supported site (YouTube, Facebook, etc.)
+1. **Paste a URL** from any supported site
 2. **Click "Fetch Formats"** to retrieve available qualities
 3. **Select quality** (video resolution or audio-only)
 4. **Choose output folder** via the folder picker
@@ -204,19 +204,6 @@ This app follows **Electron security best practices**:
    - Download entire playlist
 6. **Click "Start Download"** and watch real-time progress
 7. **Files saved** to your selected folder
-
-## 🌐 Supported Sites
-
-Supports **thousands of sites** via yt-dlp, including:
-- YouTube
-- Facebook
-- X.com (Twitter)
-- Instagram
-- TikTok
-- Vimeo
-- Dailymotion
-- Reddit
-- And many more...
 
 See [yt-dlp supported sites](https://github.com/yt-dlp/yt-dlp/blob/master/supportedsites.md) for the full list.
 

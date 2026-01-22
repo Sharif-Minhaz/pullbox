@@ -28,12 +28,32 @@ function getYtDlpPath() {
     return path.join(resourcesPath, 'resources', 'bin', binaryName);
 }
 
-// =============== ensure yt-dlp binary has execute permissions on unix systems ================
+// =============== get ffmpeg binary path based on platform and environment ================
+function getFfmpegPath() {
+    const platform = process.platform;
+    let binaryName;
+
+    if (platform === 'win32') {
+        binaryName = 'ffmpeg.exe';
+    } else if (platform === 'darwin') {
+        binaryName = 'ffmpeg-macos';
+    } else {
+        binaryName = 'ffmpeg-linux';
+    }
+
+    if (process.env.ELECTRON_START_URL) {
+        return path.join(__dirname, 'resources', 'bin', binaryName);
+    }
+
+    const resourcesPath = process.resourcesPath || app.getAppPath();
+    return path.join(resourcesPath, 'resources', 'bin', binaryName);
+}
+
+// =============== ensure binary has execute permissions on unix systems ================
 function ensureExecutePermissions(binaryPath) {
     if (process.platform !== 'win32') {
         try {
             fs.chmodSync(binaryPath, 0o755);
-            console.log('Execute permissions set for yt-dlp binary');
         } catch (error) {
             console.error('Failed to set execute permissions:', error);
         }
@@ -52,11 +72,20 @@ ipcMain.handle('ytdlp:check-playlist', async (event, url) => {
 
         ensureExecutePermissions(ytdlpPath);
 
+        const ffmpegPath = getFfmpegPath();
+        if (fs.existsSync(ffmpegPath)) {
+            ensureExecutePermissions(ffmpegPath);
+        }
+
         const args = [
             "--js-runtimes",
             "node",
-            '--flat-playlist',
-            '--dump-single-json',
+
+            "--extractor-args",
+            "youtube:player_client=android,tv,web",
+
+            "--flat-playlist",
+            "--dump-single-json",
             url
         ];
 
@@ -121,13 +150,23 @@ ipcMain.handle('ytdlp:fetch-formats', async (event, url) => {
 
         ensureExecutePermissions(ytdlpPath);
 
+        const ffmpegPath = getFfmpegPath();
+        if (fs.existsSync(ffmpegPath)) {
+            ensureExecutePermissions(ffmpegPath);
+        }
+
         const args = [
             "--js-runtimes",
             "node",
-            '--dump-json',
-            '--no-playlist',
+
+            "--extractor-args",
+            "youtube:player_client=android,tv,web",
+
+            "--dump-json",
+            "--no-playlist",
             url
         ];
+
 
         const ytdlpProcess = spawn(ytdlpPath, args);
 
@@ -219,6 +258,11 @@ ipcMain.handle('ytdlp:download', async (event, options) => {
 
         ensureExecutePermissions(ytdlpPath);
 
+        const ffmpegPath = getFfmpegPath();
+        if (fs.existsSync(ffmpegPath)) {
+            ensureExecutePermissions(ffmpegPath);
+        }
+
         const {
             url,
             outputPath,
@@ -230,18 +274,31 @@ ipcMain.handle('ytdlp:download', async (event, options) => {
             outputTemplate,
         } = options;
 
-        const args = [ "--js-runtimes",
-            "node", '--progress', '--newline' ];
+        const args = [
+            "--js-runtimes",
+            "node",
+
+            "--extractor-args",
+            "youtube:player_client=android,tv,web",
+
+            "--ffmpeg-location",
+            ffmpegPath,
+
+            "--progress",
+            "--newline"
+        ];
+
 
         // =============== format selection ================
         if (formatId) {
             args.push('-f', formatId);
         } else if (audioOnly) {
             args.push('-f', 'bestaudio');
-            args.push('-x'); // =============== extract audio ================
+            args.push('-x');
             args.push('--audio-format', 'mp3');
         } else {
-            args.push('-f', 'bestvideo+bestaudio/best');
+            args.push('-f', 'bv*+ba/best');
+            args.push('--merge-output-format', 'mp4');
         }
 
         // =============== output path ================
