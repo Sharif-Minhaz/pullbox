@@ -53,6 +53,8 @@ ipcMain.handle('ytdlp:check-playlist', async (event, url) => {
         ensureExecutePermissions(ytdlpPath);
 
         const args = [
+            "--js-runtimes",
+            "node",
             '--flat-playlist',
             '--dump-single-json',
             url
@@ -120,6 +122,8 @@ ipcMain.handle('ytdlp:fetch-formats', async (event, url) => {
         ensureExecutePermissions(ytdlpPath);
 
         const args = [
+            "--js-runtimes",
+            "node",
             '--dump-json',
             '--no-playlist',
             url
@@ -226,7 +230,8 @@ ipcMain.handle('ytdlp:download', async (event, options) => {
             outputTemplate,
         } = options;
 
-        const args = [ '--progress', '--newline' ];
+        const args = [ "--js-runtimes",
+            "node", '--progress', '--newline' ];
 
         // =============== format selection ================
         if (formatId) {
