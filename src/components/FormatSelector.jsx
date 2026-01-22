@@ -72,7 +72,7 @@ export default function FormatSelector({ mediaInfo, selectedFormat, onFormatChan
                             <div>
                                 <div className="flex items-center gap-2 mb-3">
                                     <IconVideo className="w-5 h-5 text-blue-600" />
-                                    <h3 className="text-lg font-semibold text-gray-800">video quality</h3>
+                                    <h3 className="text-lg font-semibold text-gray-800">Video quality</h3>
                                 </div>
                                 <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
                                     {resolutionFormats.map((format) => (
@@ -114,7 +114,7 @@ export default function FormatSelector({ mediaInfo, selectedFormat, onFormatChan
                             <div>
                                 <div className="flex items-center gap-2 mb-3">
                                     <IconMusic className="w-5 h-5 text-green-600" />
-                                    <h3 className="text-lg font-semibold text-gray-800">audio only</h3>
+                                    <h3 className="text-lg font-semibold text-gray-800">Audio only</h3>
                                 </div>
                                 <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
                                     <button

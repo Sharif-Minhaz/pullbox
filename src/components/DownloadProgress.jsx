@@ -11,19 +11,19 @@ export default function DownloadProgress({ progress, status, error }) {
                     {status === 'downloading' && (
                         <>
                             <IconDownload className="w-6 h-6 text-blue-600 animate-bounce" />
-                            <h3 className="text-lg font-semibold text-gray-800">downloading...</h3>
+                            <h3 className="text-lg font-semibold text-gray-800">Downloading...</h3>
                         </>
                     )}
                     {status === 'completed' && (
                         <>
                             <IconCheck className="w-6 h-6 text-green-600" />
-                            <h3 className="text-lg font-semibold text-green-800">download completed!</h3>
+                            <h3 className="text-lg font-semibold text-green-800">Download completed!</h3>
                         </>
                     )}
                     {status === 'error' && (
                         <>
                             <IconAlertCircle className="w-6 h-6 text-red-600" />
-                            <h3 className="text-lg font-semibold text-red-800">download failed</h3>
+                            <h3 className="text-lg font-semibold text-red-800">Download failed</h3>
                         </>
                     )}
                 </div>
@@ -42,7 +42,7 @@ export default function DownloadProgress({ progress, status, error }) {
                         {progress.playlistIndex && progress.playlistTotal && (
                             <div className="bg-purple-50 border border-purple-200 rounded-lg p-3">
                                 <p className="text-sm font-semibold text-purple-800">
-                                    downloading video {progress.playlistIndex} of {progress.playlistTotal}
+                                    Downloading video {progress.playlistIndex} of {progress.playlistTotal}
                                 </p>
                                 <div className="mt-2">
                                     <div className="w-full bg-purple-200 rounded-full h-2">
@@ -58,7 +58,7 @@ export default function DownloadProgress({ progress, status, error }) {
                         {/* =============== filename ================ */}
                         {progress.filename && (
                             <div>
-                                <p className="text-sm text-gray-600 mb-1">file:</p>
+                                <p className="text-sm text-gray-600 mb-1">File:</p>
                                 <p className="text-sm font-mono text-gray-800 truncate">
                                     {progress.filename}
                                 </p>
@@ -68,7 +68,7 @@ export default function DownloadProgress({ progress, status, error }) {
                         {/* =============== progress bar ================ */}
                         <div>
                             <div className="flex justify-between items-center mb-2">
-                                <span className="text-sm font-medium text-gray-700">progress</span>
+                                <span className="text-sm font-medium text-gray-700">Progress</span>
                                 <span className="text-sm font-bold text-blue-600">
                                     {progress.percentage?.toFixed(1) || 0}%
                                 </span>
@@ -84,13 +84,13 @@ export default function DownloadProgress({ progress, status, error }) {
                         {/* =============== speed and eta ================ */}
                         <div className="grid grid-cols-2 gap-4">
                             <div>
-                                <p className="text-xs text-gray-600 mb-1">speed</p>
+                                <p className="text-xs text-gray-600 mb-1">Speed</p>
                                 <p className="text-sm font-semibold text-gray-800">
                                     {progress.speed || 'calculating...'}
                                 </p>
                             </div>
                             <div>
-                                <p className="text-xs text-gray-600 mb-1">estimated time</p>
+                                <p className="text-xs text-gray-600 mb-1">Estimated time</p>
                                 <p className="text-sm font-semibold text-gray-800">
                                     {progress.eta || 'calculating...'}
                                 </p>
@@ -103,7 +103,7 @@ export default function DownloadProgress({ progress, status, error }) {
                 {status === 'completed' && (
                     <div className="mt-4 bg-green-50 border border-green-200 rounded-lg p-4">
                         <p className="text-sm text-green-800">
-                            your download has been saved to the selected folder
+                            Your download has been saved to the selected folder
                         </p>
                     </div>
                 )}

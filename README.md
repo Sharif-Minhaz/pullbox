@@ -75,24 +75,26 @@ A production-grade **Electron desktop application** that provides a modern GUI w
 ### Installation
 
 1. **Clone the repository**
+
    ```bash
    git clone <repository-url>
    cd pullbox
    ```
-
 2. **Install dependencies**
+
    ```bash
    npm install
    ```
-   
-   This will automatically download the yt-dlp binary for your platform via the `postinstall` script.
 
+   This will automatically download the yt-dlp binary for your platform via the `postinstall` script.
 3. **Run in development mode**
+
    ```bash
    npm run dev-app
    ```
 
    Or on macOS:
+
    ```bash
    npm run dev-mac
    ```
@@ -100,21 +102,25 @@ A production-grade **Electron desktop application** that provides a modern GUI w
 ## 📦 Building
 
 ### Build the app
+
 ```bash
 npm run build
 ```
 
 ### Package for current platform
+
 ```bash
 npm run package
 ```
 
 ### Create distributables
+
 ```bash
 npm run make
 ```
 
 ### Windows-specific build
+
 ```bash
 npm run make-win
 ```
@@ -153,6 +159,7 @@ pullbox/
 ### Key Files
 
 #### `main.cjs` - Main Process
+
 - Resolves yt-dlp binary path (dev vs prod)
 - Spawns yt-dlp via `child_process.spawn()`
 - Parses stdout for progress (`--progress --newline`)
@@ -160,11 +167,13 @@ pullbox/
 - Manages file permissions (chmod on macOS/Linux)
 
 #### `preload.cjs` - Security Bridge
+
 - Exposes minimal API via `contextBridge.exposeInMainWorld()`
 - No direct Node.js access to renderer
 - `contextIsolation: true`
 
 #### `src/App.jsx` - Main UI
+
 - React functional components with hooks
 - State management for URL, formats, progress
 - IPC calls to main process
@@ -172,15 +181,15 @@ pullbox/
 
 ### Running Scripts
 
-| Command | Description |
-|---------|-------------|
-| `npm run dev` | Start Vite dev server only |
-| `npm run dev-app` | Start Vite + Electron (Linux/Windows) |
-| `npm run dev-mac` | Start Vite + Electron (macOS) |
-| `npm run build` | Build React app to `dist/` |
-| `npm run package` | Package Electron app |
-| `npm run make` | Create platform distributables |
-| `npm run download-ytdlp` | Manually download yt-dlp binary |
+| Command                    | Description                           |
+| -------------------------- | ------------------------------------- |
+| `npm run dev`            | Start Vite dev server only            |
+| `npm run dev-app`        | Start Vite + Electron (Linux/Windows) |
+| `npm run dev-mac`        | Start Vite + Electron (macOS)         |
+| `npm run build`          | Build React app to `dist/`          |
+| `npm run package`        | Package Electron app                  |
+| `npm run make`           | Create platform distributables        |
+| `npm run download-ytdlp` | Manually download yt-dlp binary       |
 
 ## 🔐 Security
 
@@ -212,16 +221,19 @@ See [yt-dlp supported sites](https://github.com/yt-dlp/yt-dlp/blob/master/suppor
 ### yt-dlp binary not found
 
 **Solution:**
+
 ```bash
 npm run download-ytdlp
 ```
 
 Or manually download from [yt-dlp releases](https://github.com/yt-dlp/yt-dlp/releases/latest) and place in `resources/bin/`:
+
 - Windows: `yt-dlp.exe`
 - macOS: `yt-dlp-macos`
 - Linux: `yt-dlp-linux`
 
 On macOS/Linux, make executable:
+
 ```bash
 chmod +x resources/bin/yt-dlp-macos
 chmod +x resources/bin/yt-dlp-linux

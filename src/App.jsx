@@ -7,6 +7,7 @@ import DownloadProgress from './components/DownloadProgress';
 import PlaylistInfo from './components/PlaylistInfo';
 import { IconDownload, IconRefresh } from '@tabler/icons-react';
 import './App.css';
+import { parseYtDlpError } from './utils';
 
 function App() {
     const [currentUrl, setCurrentUrl] = useState('');
@@ -23,6 +24,14 @@ function App() {
     const [downloadStatus, setDownloadStatus] = useState('idle'); // idle, downloading, completed, error
     const [downloadProgress, setDownloadProgress] = useState(null);
     const [error, setError] = useState(null);
+
+    // =============== load saved download path on mount ================
+    useEffect(() => {
+        const savedPath = localStorage.getItem('lastDownloadPath');
+        if (savedPath) {
+            setOutputPath(savedPath);
+        }
+    }, []);
 
     // =============== fetch available formats when user provides url ================
     const handleFetchFormats = async (url) => {
@@ -67,8 +76,8 @@ function App() {
                 }
             }
         } catch (error) {
-            setError(error.message || 'failed to fetch formats');
-            console.error('Error fetching formats:', error);
+            const friendlyError = parseYtDlpError(error.message);
+            setError(friendlyError);
         } finally {
             setIsLoadingFormats(false);
         }
@@ -101,9 +110,10 @@ function App() {
                 setDownloadStatus('completed');
             }
         } catch (error) {
-            setDownloadStatus('error');
-            setError(error.message || 'download failed');
             console.error('Download error:', error);
+            const friendlyError = parseYtDlpError(error.message);
+            setDownloadStatus('error');
+            setError(friendlyError);
         }
     };
 
@@ -160,7 +170,7 @@ function App() {
                 />
 
                 {/* =============== error display ================ */}
-                {error && !downloadStatus && (
+                {error && (
                     <div className="w-full max-w-4xl mx-auto mt-6">
                         <div className="bg-red-50 border border-red-200 rounded-lg p-4">
                             <p className="text-sm text-red-800">{error}</p>
@@ -211,7 +221,7 @@ function App() {
                                     className="flex-1 bg-green-600 hover:bg-green-700 disabled:bg-gray-400 text-white font-bold py-4 px-6 rounded-lg flex items-center justify-center gap-2 transition-colors text-lg"
                                 >
                                     <IconDownload className="w-6 h-6" />
-                                    {downloadStatus === 'downloading' ? 'downloading...' : 'start download'}
+                                    {downloadStatus === 'downloading' ? 'Downloading...' : 'Start Download'}
                                 </button>
                                 
                                 {(downloadStatus === 'completed' || downloadStatus === 'error') && (
@@ -220,7 +230,7 @@ function App() {
                                         className="px-6 py-4 bg-blue-600 hover:bg-blue-700 text-white rounded-lg flex items-center gap-2 transition-colors"
                                     >
                                         <IconRefresh className="w-6 h-6" />
-                                        new download
+                                        New Download
                                     </button>
                                 )}
                             </div>

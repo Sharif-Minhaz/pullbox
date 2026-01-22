@@ -22,11 +22,11 @@ export default function URLInput({ onFetchFormats, isLoading }) {
                 <form onSubmit={handleSubmit} className="space-y-4">
                     <div>
                         <label htmlFor="url" className="block text-sm font-medium text-gray-700 mb-2">
-                            media url
+                            Media URL
                         </label>
                         <input
                             id="url"
-                            type="text"
+                            type="search"
                             value={url}
                             onChange={(event) => setUrl(event.target.value)}
                             placeholder="https://www.youtube.com/watch?v=..."
@@ -41,12 +41,12 @@ export default function URLInput({ onFetchFormats, isLoading }) {
                         className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 text-white font-medium py-3 px-6 rounded-lg flex items-center justify-center gap-2 transition-colors"
                     >
                         <IconPlayerPlay className="w-5 h-5" />
-                        {isLoading ? 'fetching formats...' : 'fetch formats'}
+                        {isLoading ? 'fetching video information...' : 'fetch video information'}
                     </button>
                 </form>
 
                 <div className="mt-4 text-xs text-gray-500">
-                    <p>supported sites: YouTube, Facebook, X.com, Instagram, TikTok, and thousands more</p>
+                    <p>Supported sites: YouTube, Facebook, X.com, Instagram, TikTok, and thousands more</p>
                 </div>
             </div>
         </div>

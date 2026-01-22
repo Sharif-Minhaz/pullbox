@@ -327,6 +327,9 @@ ipcMain.handle('ytdlp:download', async (event, options) => {
 
         args.push(url);
 
+        console.log(ytdlpPath, args);
+        return;
+
         const ytdlpProcess = spawn(ytdlpPath, args);
 
         let lastProgress = null;

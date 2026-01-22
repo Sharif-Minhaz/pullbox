@@ -11,7 +11,7 @@ export default function DownloadOptions({ options, onOptionsChange }) {
     return (
         <div className="w-full max-w-4xl mx-auto mt-6">
             <div className="bg-white rounded-lg shadow-md p-6">
-                <h3 className="text-lg font-semibold text-gray-800 mb-4">download options</h3>
+                <h3 className="text-lg font-semibold text-gray-800 mb-4">Download options</h3>
                 
                 <div className="space-y-3">
                     {/* =============== subtitles option ================ */}
@@ -24,8 +24,8 @@ export default function DownloadOptions({ options, onOptionsChange }) {
                         />
                         <IconSubtitles className="w-5 h-5 text-gray-600" />
                         <div className="flex-1">
-                            <p className="font-medium text-gray-800">include subtitles</p>
-                            <p className="text-xs text-gray-500">download available subtitles</p>
+                            <p className="font-medium text-gray-800">Include subtitles</p>
+                            <p className="text-xs text-gray-500">Download available subtitles</p>
                         </div>
                     </label>
 
@@ -39,8 +39,8 @@ export default function DownloadOptions({ options, onOptionsChange }) {
                         />
                         <IconInfoCircle className="w-5 h-5 text-gray-600" />
                         <div className="flex-1">
-                            <p className="font-medium text-gray-800">embed metadata</p>
-                            <p className="text-xs text-gray-500">include title, artist, thumbnail</p>
+                            <p className="font-medium text-gray-800">Embed metadata</p>
+                            <p className="text-xs text-gray-500">Include title, artist, thumbnail</p>
                         </div>
                     </label>
 
@@ -54,8 +54,8 @@ export default function DownloadOptions({ options, onOptionsChange }) {
                         />
                         <IconPlaylist className="w-5 h-5 text-gray-600" />
                         <div className="flex-1">
-                            <p className="font-medium text-gray-800">download entire playlist</p>
-                            <p className="text-xs text-gray-500">if url is a playlist, download all videos</p>
+                            <p className="font-medium text-gray-800">Download entire playlist</p>
+                            <p className="text-xs text-gray-500">If URL is a playlist, download all videos</p>
                         </div>
                     </label>
                 </div>
