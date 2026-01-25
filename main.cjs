@@ -377,8 +377,14 @@ ipcMain.handle('ytdlp:download', async (event, options) => {
             const message = data.toString();
             console.error('yt-dlp error:', message);
 
-            // =============== send error to renderer ================
-            if (mainWindow && !mainWindow.isDestroyed()) {
+            // =============== filter non-fatal warnings from ui ================
+            const isIgnoredWarning =
+                message.includes('forcing SABR streaming') ||
+                message.includes('Some web client https formats have been skipped') ||
+                message.includes('missing a url');
+
+            // =============== send error to renderer only if not ignored ================
+            if (!isIgnoredWarning && mainWindow && !mainWindow.isDestroyed()) {
                 mainWindow.webContents.send('ytdlp:error', message);
             }
         });

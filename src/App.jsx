@@ -10,6 +10,7 @@ import './App.css';
 import { parseYtDlpError } from './utils';
 
 function App() {
+    const [urlKey, setUrlKey] = useState(0);
     const [currentUrl, setCurrentUrl] = useState('');
     const [isLoadingFormats, setIsLoadingFormats] = useState(false);
     const [mediaInfo, setMediaInfo] = useState(null);
@@ -143,6 +144,7 @@ function App() {
 
     // =============== reset to start new download ================
     const handleReset = () => {
+        setUrlKey(prev => prev + 1);
         setCurrentUrl('');
         setMediaInfo(null);
         setPlaylistInfo(null);
@@ -165,6 +167,7 @@ function App() {
             <div className="max-w-6xl mx-auto">
                 {/* =============== url input section ================ */}
                 <URLInput 
+                    key={urlKey}
                     onFetchFormats={handleFetchFormats}
                     isLoading={isLoadingFormats}
                 />

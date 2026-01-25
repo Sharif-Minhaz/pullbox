@@ -3,6 +3,13 @@ import { IconDownload, IconCheck, IconAlertCircle } from '@tabler/icons-react';
 export default function DownloadProgress({ progress, status, error }) {
     if (status === 'idle') return null;
 
+    // =============== normalize filename to show actual output format ================
+    const getDisplayFilename = (filename) => {
+        if (!filename) return '';
+        // =============== replace video extensions with mp4 since we merge to mp4 ================
+        return filename.replace(/\.(webm|mkv|flv|avi)$/i, '.mp4');
+    };
+
     return (
         <div className="w-full max-w-4xl mx-auto mt-6">
             <div className="bg-white rounded-lg shadow-md p-6">
@@ -60,7 +67,7 @@ export default function DownloadProgress({ progress, status, error }) {
                             <div>
                                 <p className="text-sm text-gray-600 mb-1">File:</p>
                                 <p className="text-sm font-mono text-gray-800 truncate">
-                                    {progress.filename}
+                                    {getDisplayFilename(progress.filename)}
                                 </p>
                             </div>
                         )}
