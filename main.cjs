@@ -81,8 +81,8 @@ ipcMain.handle('ytdlp:check-playlist', async (event, url) => {
             "--js-runtimes",
             "node",
 
-            "--extractor-args",
-            "youtube:player_client=android,tv,web",
+            // "--extractor-args",
+            // "youtube:player_client=android,tv,web",
 
             "--flat-playlist",
             "--dump-single-json",
@@ -159,8 +159,8 @@ ipcMain.handle('ytdlp:fetch-formats', async (event, url) => {
             "--js-runtimes",
             "node",
 
-            "--extractor-args",
-            "youtube:player_client=android,tv,web",
+            // "--extractor-args",
+            // "youtube:player_client=android,tv,web",
 
             "--dump-json",
             "--no-playlist",
@@ -275,29 +275,26 @@ ipcMain.handle('ytdlp:download', async (event, options) => {
         } = options;
 
         const args = [
-            "--js-runtimes",
-            "node",
-
-            "--extractor-args",
-            "youtube:player_client=android,tv,web",
-
-            "--ffmpeg-location",
+            '--js-runtimes',
+            'node',
+            '--ffmpeg-location',
             ffmpegPath,
-
-            "--progress",
-            "--newline"
+            '--progress',
+            '--newline'
         ];
 
-
         // =============== format selection ================
-        if (formatId) {
-            args.push('-f', formatId);
-        } else if (audioOnly) {
+        if (audioOnly) {
             args.push('-f', 'bestaudio');
             args.push('-x');
             args.push('--audio-format', 'mp3');
+        } else if (formatId) {
+            // =============== use constraint-based selection even with format id ================
+            args.push('-f', `${formatId}+bestaudio/best`);
+            args.push('--merge-output-format', 'mp4');
         } else {
-            args.push('-f', 'bv*+ba/best');
+            // =============== best video with audio merge ================
+            args.push('-f', 'bestvideo[ext=mp4]+bestaudio[ext=m4a]/bestvideo+bestaudio/best');
             args.push('--merge-output-format', 'mp4');
         }
 
@@ -326,9 +323,6 @@ ipcMain.handle('ytdlp:download', async (event, options) => {
         }
 
         args.push(url);
-
-        console.log(ytdlpPath, args);
-        return;
 
         const ytdlpProcess = spawn(ytdlpPath, args);
 
