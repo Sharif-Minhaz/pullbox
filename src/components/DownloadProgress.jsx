@@ -1,4 +1,4 @@
-import { IconDownload, IconCheck, IconAlertCircle, IconLoader2 } from '@tabler/icons-react';
+import { IconDownload, IconCheck, IconAlertCircle, IconLoader2, IconMusic, IconArrowMerge } from '@tabler/icons-react';
 
 export default function DownloadProgress({ progress, status, error }) {
     if (status === 'idle') return null;
@@ -27,9 +27,16 @@ export default function DownloadProgress({ progress, status, error }) {
                     {status === 'downloading' && (
                         <>
                             <div className="w-8 h-8 rounded-full bg-linear-to-br from-indigo-500 to-violet-500 flex items-center justify-center shadow-md shadow-indigo-500/20">
-                                <IconLoader2 className="w-4.5 h-4.5 text-white animate-spin" />
+                                {progress?.stage === 'merging'
+                                    ? <IconArrowMerge className="w-4.5 h-4.5 text-white" />
+                                    : <IconLoader2 className="w-4.5 h-4.5 text-white animate-spin" />
+                                }
                             </div>
-                            <h3 className="text-lg font-bold text-indigo-950">Downloading...</h3>
+                            <h3 className="text-lg font-bold text-indigo-950">
+                                {progress?.stage === 'audio' && 'Downloading audio...'}
+                                {progress?.stage === 'merging' && 'Merging audio & video...'}
+                                {!progress?.stage && 'Downloading...'}
+                            </h3>
                         </>
                     )}
                     {status === 'completed' && (

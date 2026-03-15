@@ -219,17 +219,25 @@ ipcMain.handle('ytdlp:fetch-formats', async (event, url) => {
                     title: info.title || 'Unknown',
                     thumbnail: info.thumbnail || null,
                     duration: info.duration || 0,
-                    formats: formats.map(format => ({
-                        formatId: format.format_id,
-                        ext: format.ext,
-                        resolution: format.resolution || 'audio only',
-                        filesize: format.filesize || format.filesize_approx || 0,
-                        vcodec: format.vcodec,
-                        acodec: format.acodec,
-                        fps: format.fps,
-                        height: format.height,
-                        width: format.width,
-                    })),
+                    formats: formats.map(format => {
+                        // =============== estimate filesize from bitrate and duration when not provided ================
+                        let filesize = format.filesize || format.filesize_approx || 0;
+                        if (!filesize && format.tbr && info.duration) {
+                            filesize = Math.round((format.tbr * 1000 * info.duration) / 8);
+                        }
+
+                        return {
+                            formatId: format.format_id,
+                            ext: format.ext,
+                            resolution: format.resolution || 'audio only',
+                            filesize,
+                            vcodec: format.vcodec,
+                            acodec: format.acodec,
+                            fps: format.fps,
+                            height: format.height,
+                            width: format.width,
+                        };
+                    }),
                     resolutions,
                     extensions,
                     hasAudio: audioFormats.length > 0,

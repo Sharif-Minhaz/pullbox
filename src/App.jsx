@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import URLInput from './components/URLInput';
 import FormatSelector from './components/FormatSelector';
 import OutputPathSelector from './components/OutputPathSelector';
@@ -25,6 +25,7 @@ function App() {
     const [downloadStatus, setDownloadStatus] = useState('idle'); // idle, downloading, completed, error
     const [downloadProgress, setDownloadProgress] = useState(null);
     const [error, setError] = useState(null);
+    const progressRef = useRef(null);
 
     // =============== load saved download path on mount ================
     useEffect(() => {
@@ -95,6 +96,11 @@ function App() {
         setDownloadProgress(null);
         setError(null);
 
+        // =============== scroll to progress section so user can see it ================
+        setTimeout(() => {
+            progressRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }, 100);
+
         try {
             const result = await window.electronAPI.download({
                 url: currentUrl,
@@ -122,13 +128,6 @@ function App() {
     useEffect(() => {
         const unsubscribeProgress = window.electronAPI.onProgress((progress) => {
             setDownloadProgress(progress);
-
-            // =============== check if download is complete ================
-            if (progress.percentage === 100) {
-                setTimeout(() => {
-                    setDownloadStatus('completed');
-                }, 500);
-            }
         });
 
         const unsubscribeError = window.electronAPI.onError((errorMessage) => {
@@ -252,11 +251,13 @@ function App() {
                 )}
 
                 {/* =============== download progress ================ */}
-                <DownloadProgress
-                    progress={downloadProgress}
-                    status={downloadStatus}
-                    error={downloadStatus === 'error' ? error : null}
-                />
+                <div ref={progressRef}>
+                    <DownloadProgress
+                        progress={downloadProgress}
+                        status={downloadStatus}
+                        error={downloadStatus === 'error' ? error : null}
+                    />
+                </div>
             </div>
         </div>
     );
