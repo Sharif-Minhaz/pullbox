@@ -60,10 +60,10 @@ function App() {
             // =============== fetch formats for the first video ================
             const info = await window.electronAPI.fetchFormats(url);
             setMediaInfo(info);
-            
+
             // =============== auto-select best video format if available ================
             if (info.formats && info.formats.length > 0) {
-                const videoFormats = info.formats.filter(format => 
+                const videoFormats = info.formats.filter(format =>
                     format.vcodec && format.vcodec !== 'none'
                 );
                 if (videoFormats.length > 0) {
@@ -122,7 +122,7 @@ function App() {
     useEffect(() => {
         const unsubscribeProgress = window.electronAPI.onProgress((progress) => {
             setDownloadProgress(progress);
-            
+
             // =============== check if download is complete ================
             if (progress.percentage === 100) {
                 setTimeout(() => {
@@ -163,10 +163,17 @@ function App() {
     };
 
     return (
-        <div className="min-h-screen bg-linear-to-br from-gray-50 to-gray-100 py-8 px-4">
-            <div className="max-w-6xl mx-auto">
+        <div className="min-h-screen bg-linear-to-br from-indigo-100 via-violet-50 to-indigo-100 py-8 px-4 relative overflow-hidden">
+            {/* =============== decorative background orbs ================ */}
+            <div className="pointer-events-none fixed inset-0 overflow-hidden">
+                <div className="absolute -top-24 -right-24 w-80 h-80 rounded-full bg-indigo-300/20 blur-3xl" />
+                <div className="absolute bottom-32 -left-32 w-96 h-96 rounded-full bg-violet-300/15 blur-3xl" />
+                <div className="absolute top-1/2 right-1/4 w-64 h-64 rounded-full bg-purple-200/10 blur-3xl" />
+            </div>
+
+            <div className="max-w-6xl mx-auto relative z-10">
                 {/* =============== url input section ================ */}
-                <URLInput 
+                <URLInput
                     key={urlKey}
                     onFetchFormats={handleFetchFormats}
                     isLoading={isLoadingFormats}
@@ -174,16 +181,19 @@ function App() {
 
                 {/* =============== error display ================ */}
                 {error && (
-                    <div className="w-full max-w-4xl mx-auto mt-6">
-                        <div className="bg-red-50 border border-red-200 rounded-lg p-4">
-                            <p className="text-sm text-red-800">{error}</p>
+                    <div className="w-full max-w-4xl mx-auto mt-5">
+                        <div className="glass-card p-5" style={{ borderColor: 'rgba(252, 165, 165, 0.4)' }}>
+                            <div className="flex items-center gap-3">
+                                <div className="w-7 h-7 rounded-full bg-linear-to-br from-red-500 to-red-600 flex items-center justify-center text-white text-xs font-bold shrink-0">!</div>
+                                <p className="text-sm text-red-800 font-medium">{error}</p>
+                            </div>
                         </div>
                     </div>
                 )}
 
                 {/* =============== playlist info ================ */}
                 {playlistInfo && playlistInfo.isPlaylist && (
-                    <PlaylistInfo 
+                    <PlaylistInfo
                         playlistInfo={playlistInfo}
                         onTogglePlaylist={handleTogglePlaylist}
                         downloadPlaylist={downloadOptions.downloadPlaylist}
@@ -193,16 +203,16 @@ function App() {
                 {/* =============== format selector ================ */}
                 {mediaInfo && (
                     <>
-                        <FormatSelector 
+                        <FormatSelector
                             mediaInfo={mediaInfo}
                             selectedFormat={selectedFormat}
                             onFormatChange={setSelectedFormat}
                         />
 
                         {/* =============== output path selector ================ */}
-                        <div className="w-full max-w-4xl mx-auto mt-6">
-                            <div className="bg-white rounded-lg shadow-md p-6">
-                                <OutputPathSelector 
+                        <div className="w-full max-w-4xl mx-auto mt-5">
+                            <div className="glass-card p-6">
+                                <OutputPathSelector
                                     outputPath={outputPath}
                                     onSelectPath={setOutputPath}
                                 />
@@ -210,27 +220,27 @@ function App() {
                         </div>
 
                         {/* =============== download options ================ */}
-                        <DownloadOptions 
+                        <DownloadOptions
                             options={downloadOptions}
                             onOptionsChange={setDownloadOptions}
                         />
 
                         {/* =============== download button ================ */}
-                        <div className="w-full max-w-4xl mx-auto mt-6">
+                        <div className="w-full max-w-4xl mx-auto mt-5">
                             <div className="flex gap-3">
                                 <button
                                     onClick={handleStartDownload}
                                     disabled={!selectedFormat || !outputPath || downloadStatus === 'downloading'}
-                                    className="flex-1 bg-green-600 hover:bg-green-700 disabled:bg-gray-400 text-white font-bold py-4 px-6 rounded-lg flex items-center justify-center gap-2 transition-colors text-lg"
+                                    className="flex-1 btn-success disabled:opacity-50 disabled:shadow-none disabled:cursor-not-allowed text-white font-bold py-4 px-6 rounded-2xl flex items-center justify-center gap-2 transition-all duration-200 text-lg"
                                 >
                                     <IconDownload className="w-6 h-6" />
                                     {downloadStatus === 'downloading' ? 'Downloading...' : 'Start Download'}
                                 </button>
-                                
+
                                 {(downloadStatus === 'completed' || downloadStatus === 'error') && (
                                     <button
                                         onClick={handleReset}
-                                        className="px-6 py-4 bg-blue-600 hover:bg-blue-700 text-white rounded-lg flex items-center gap-2 transition-colors"
+                                        className="px-6 py-4 btn-primary text-white rounded-2xl flex items-center gap-2 transition-all duration-200 font-semibold"
                                     >
                                         <IconRefresh className="w-6 h-6" />
                                         New Download
@@ -242,7 +252,7 @@ function App() {
                 )}
 
                 {/* =============== download progress ================ */}
-                <DownloadProgress 
+                <DownloadProgress
                     progress={downloadProgress}
                     status={downloadStatus}
                     error={downloadStatus === 'error' ? error : null}

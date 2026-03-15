@@ -1,4 +1,4 @@
-import { IconVideo, IconMusic, IconFileTypeJpg } from '@tabler/icons-react';
+import { IconVideo, IconMusic } from '@tabler/icons-react';
 
 export default function FormatSelector({ mediaInfo, selectedFormat, onFormatChange }) {
     if (!mediaInfo) return null;
@@ -7,8 +7,8 @@ export default function FormatSelector({ mediaInfo, selectedFormat, onFormatChan
 
     // =============== filter formats by type ================
     const videoFormats = formats.filter(format => format.vcodec && format.vcodec !== 'none');
-    const audioFormats = formats.filter(format => 
-        format.acodec && format.acodec !== 'none' && 
+    const audioFormats = formats.filter(format =>
+        format.acodec && format.acodec !== 'none' &&
         (!format.vcodec || format.vcodec === 'none')
     );
 
@@ -25,7 +25,7 @@ export default function FormatSelector({ mediaInfo, selectedFormat, onFormatChan
         const hours = Math.floor(seconds / 3600);
         const minutes = Math.floor((seconds % 3600) / 60);
         const secs = Math.floor(seconds % 60);
-        
+
         if (hours > 0) {
             return `${hours}:${String(minutes).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
         }
@@ -43,36 +43,36 @@ export default function FormatSelector({ mediaInfo, selectedFormat, onFormatChan
     };
 
     return (
-        <div className="w-full max-w-4xl mx-auto mt-6">
-            <div className="bg-white rounded-lg shadow-md overflow-hidden">
+        <div className="w-full max-w-4xl mx-auto mt-5">
+            <div className="glass-card overflow-hidden">
                 {/* =============== media info header ================ */}
-                <div className="bg-linear-to-r from-blue-600 to-blue-700 p-6 text-white">
+                <div className="bg-linear-to-r from-indigo-500 to-violet-600 p-6 text-white">
                     <div className="flex gap-4">
                         {thumbnail && (
-                            <img 
-                                src={thumbnail} 
+                            <img
+                                src={thumbnail}
                                 alt={title}
-                                className="w-40 h-24 object-cover rounded-lg shadow-lg"
+                                className="w-40 h-24 object-cover rounded-xl shadow-lg shadow-black/20"
                             />
                         )}
-                        <div className="flex-1">
-                            <h2 className="text-xl font-bold mb-2">{title}</h2>
+                        <div className="flex-1 min-w-0">
+                            <h2 className="text-lg font-bold mb-2 leading-snug">{title}</h2>
                             {duration > 0 && (
-                                <p className="text-blue-100">duration: {formatDuration(duration)}</p>
+                                <p className="text-indigo-100 text-sm">Duration: {formatDuration(duration)}</p>
                             )}
                         </div>
                     </div>
                 </div>
 
-                {/* =============== format selection tabs ================ */}
+                {/* =============== format selection ================ */}
                 <div className="p-6">
                     <div className="space-y-6">
                         {/* =============== video formats ================ */}
                         {resolutionFormats.length > 0 && (
                             <div>
                                 <div className="flex items-center gap-2 mb-3">
-                                    <IconVideo className="w-5 h-5 text-blue-600" />
-                                    <h3 className="text-lg font-semibold text-gray-800">Video quality</h3>
+                                    <IconVideo className="w-5 h-5 text-indigo-500" />
+                                    <h3 className="text-sm font-bold text-indigo-950 uppercase tracking-wide">Video Quality</h3>
                                 </div>
                                 <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
                                     {resolutionFormats.map((format) => (
@@ -84,21 +84,21 @@ export default function FormatSelector({ mediaInfo, selectedFormat, onFormatChan
                                                 resolution: format.height,
                                                 ext: format.ext,
                                             })}
-                                            className={`p-4 border-2 rounded-lg transition-all ${
+                                            className={`p-4 rounded-xl transition-all duration-200 ${
                                                 selectedFormat?.formatId === format.formatId
-                                                    ? 'border-blue-600 bg-blue-50'
-                                                    : 'border-gray-200 hover:border-blue-300'
+                                                    ? 'glass-inner-selected'
+                                                    : 'glass-inner hover:border-indigo-300'
                                             }`}
                                         >
                                             <div className="text-center">
-                                                <p className="font-bold text-lg text-gray-800">
+                                                <p className="font-extrabold text-lg text-indigo-950">
                                                     {format.height}p
                                                 </p>
-                                                <p className="text-xs text-gray-600 mt-1">
-                                                    {format.ext} • {formatFilesize(format.filesize)}
+                                                <p className="text-xs text-slate-600 mt-1">
+                                                    {format.ext} · {formatFilesize(format.filesize)}
                                                 </p>
                                                 {format.fps && (
-                                                    <p className="text-xs text-gray-500 mt-1">
+                                                    <p className="text-xs text-indigo-500/70 mt-1">
                                                         {format.fps} fps
                                                     </p>
                                                 )}
@@ -113,8 +113,8 @@ export default function FormatSelector({ mediaInfo, selectedFormat, onFormatChan
                         {audioFormats.length > 0 && (
                             <div>
                                 <div className="flex items-center gap-2 mb-3">
-                                    <IconMusic className="w-5 h-5 text-green-600" />
-                                    <h3 className="text-lg font-semibold text-gray-800">Audio only</h3>
+                                    <IconMusic className="w-5 h-5 text-violet-500" />
+                                    <h3 className="text-sm font-bold text-indigo-950 uppercase tracking-wide">Audio Only</h3>
                                 </div>
                                 <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
                                     <button
@@ -123,17 +123,17 @@ export default function FormatSelector({ mediaInfo, selectedFormat, onFormatChan
                                             type: 'audio',
                                             ext: 'mp3',
                                         })}
-                                        className={`p-4 border-2 rounded-lg transition-all ${
+                                        className={`p-4 rounded-xl transition-all duration-200 ${
                                             selectedFormat?.type === 'audio'
-                                                ? 'border-green-600 bg-green-50'
-                                                : 'border-gray-200 hover:border-green-300'
+                                                ? 'glass-inner-selected'
+                                                : 'glass-inner hover:border-violet-300'
                                         }`}
                                     >
                                         <div className="text-center">
-                                            <p className="font-bold text-lg text-gray-800">
-                                                best audio
+                                            <p className="font-bold text-lg text-indigo-950">
+                                                Best Audio
                                             </p>
-                                            <p className="text-xs text-gray-600 mt-1">
+                                            <p className="text-xs text-slate-600 mt-1">
                                                 mp3 format
                                             </p>
                                         </div>
